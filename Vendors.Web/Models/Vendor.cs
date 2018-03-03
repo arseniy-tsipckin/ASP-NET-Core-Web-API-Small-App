@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Vendors.Infrastructure.Automapper;
+using Vendors.Services.Models;
 
 namespace Vendors.API.Models
 {
-    public class Vendor : IModel
+    public class Vendor : IModel,IMap<IVendor>
     {
         public long Id { get; set; }
         public string FirstName { get; set; }

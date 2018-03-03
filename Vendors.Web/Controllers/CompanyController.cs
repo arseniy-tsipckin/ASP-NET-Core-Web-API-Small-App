@@ -4,6 +4,7 @@ using Vendors.Services;
 using Vendors.API.Models;
 using Vendors.Services.Models;
 using Vendors.Services.Repositories;
+using AutoMapper;
 
 namespace Vendors.API.Controllers
 {
@@ -11,7 +12,7 @@ namespace Vendors.API.Controllers
     public class CompanyController : BaseController<Company, ICompany, ICompanyRepository>
     {
         private const string ROUTE_NAME = "GetCompany";
-        protected override string RouteName => ROUTE_NAME;
+        protected override string RouteNameGet => ROUTE_NAME;
         public CompanyController(IDataService service) : base(service)
         {
 
@@ -48,6 +49,23 @@ namespace Vendors.API.Controllers
         {
             return base.DeleteRange(ids);
         }
+        [HttpGet("search/{keyword}")]
+        public override IEnumerable<Company> Search(string keyword)
+        {
+            return base.Search(keyword);
+
+        }
+        [HttpGet("contact/{id}")]
+        public IEnumerable<Company> GetByContact(long id)
+        {
+            return Mapper.Map<IEnumerable<Company>>(Repo.GetByContact(id));
+        }
+        [HttpGet("location/{id}")]
+        public IEnumerable<Company> GetByLocation(long id)
+        {
+            return Mapper.Map<IEnumerable<Company>>(Repo.GetByLocation(id));
+        }
+
 
 
     }

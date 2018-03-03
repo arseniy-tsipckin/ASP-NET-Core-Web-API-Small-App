@@ -5,8 +5,10 @@ using Vendors.Services.Models;
 
 namespace Vendors.Services.Repositories
 {
-    public interface ILocationRepository:IRepository<ILocation>
-       
+    public interface IProductRepository:IRepository<IProduct> 
+        
     {
+        IEnumerable<IProduct> GetByCategory(long id);
+        
     }
 }

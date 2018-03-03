@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Vendors.Infrastructure.Automapper;
 using Vendors.Services.Models;
 
 namespace Vendors.Services.TestDataService.Models

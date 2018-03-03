@@ -11,14 +11,17 @@ using Vendors.Services.TestDataService.Models;
 
 namespace Vendors.Services.TestDataService.Repositories
 {
-    public abstract class  AbstractRepository<IEntity,TEntity>  where IEntity:IModel where TEntity:AbstractModel,IEntity
+    public abstract class  BaseRepository<TEntity,IEntity>:IRepository<IEntity>
+        where TEntity:AbstractModel, IEntity
+        where IEntity:IModel
+        
     {
-        protected readonly DbContext _context;
+        protected readonly VendorsDbContext _context;
         protected readonly DbSet<TEntity> _entities;
 
 
 
-        public AbstractRepository(DbContext context)
+        public BaseRepository(VendorsDbContext context)
         {
             _context = context;
             _entities = context.Set<TEntity>();
@@ -27,12 +30,12 @@ namespace Vendors.Services.TestDataService.Repositories
         {
             var newEntity=_entities.Add(MapFromProxyToEntity(entity));
             _context.SaveChanges();
-            return MapFromEntityToProxy(newEntity.Entity);
+            return newEntity.Entity;
         }
 
         public virtual IEnumerable<IEntity> AddRange(IEnumerable<IEntity> entities)
         {
-            _context.AddRange(MapFromProxyToEntityRange(entities));
+            _context.AddRange(entities);
             _context.SaveChanges();
             return entities;
         }
@@ -73,12 +76,14 @@ namespace Vendors.Services.TestDataService.Repositories
         {
             var oldEntity = GetEntity(entity.Id);
             _context.Entry(oldEntity).State = EntityState.Unchanged;
-            oldEntity = MapFromProxyToEntityIgnoreId(entity, oldEntity);
+            oldEntity = MapFromProxyToEntity(entity, oldEntity, opts => opts.ConfigureMap()
+            .ForMember(x => x.Id, opt => opt.Ignore()));
             _context.SaveChanges();
         }
 
         public virtual void UpdateRange(IEnumerable<IEntity> entities)
         {
+            
             _entities.UpdateRange(MapFromProxyToEntityRange(entities));
             _context.SaveChanges();
         }
@@ -90,6 +95,8 @@ namespace Vendors.Services.TestDataService.Repositories
         {
             return GetAllEntities();
         }
+        public abstract IEnumerable<IEntity> Search(string keyword);
+
 
         protected virtual TEntity GetEntity(long id)
         {
@@ -103,15 +110,15 @@ namespace Vendors.Services.TestDataService.Repositories
         {
             return _entities.Where(ent =>(ids).Contains(ent.Id));
         }
-        protected virtual IEntity GetAsNoTracking(long id)
+        protected virtual TEntity GetAsNoTracking(long id)
         {
             return _entities.AsNoTracking().FirstOrDefault(ent => ent.Id == id);
         }
 
 
-        protected TEntity MapFromProxyToEntityIgnoreId(IEntity iEntity,TEntity entity)
+        protected TEntity MapFromProxyToEntity(object iEntity,TEntity entity, Action<IMappingOperationOptions<object, TEntity>> opts)
         {
-            return Mapper.Map(iEntity, entity,opts=> opts.ConfigureMap().ForMember(x => x.Id, opt => opt.Ignore()));
+            return Mapper.Map(iEntity, entity,opts);
         }
         protected TEntity MapFromProxyToEntity(IEntity iEntity)
         {
@@ -123,13 +130,13 @@ namespace Vendors.Services.TestDataService.Repositories
         }
         protected IEnumerable<TEntity> MapFromProxyToEntityRange(IEnumerable<IEntity> iEntities)
         {
-            return Mapper.Map<IEnumerable<IEntity>, IEnumerable<TEntity>>(iEntities); 
+            return Mapper.Map<IEnumerable<IEntity>, IEnumerable<TEntity>>(iEntities);
         }
         protected IEnumerable<IEntity> MapFromEntityToProxyRange(IEnumerable<TEntity> entities)
         {
-            return Mapper.Map<IEnumerable<TEntity>,IEnumerable<IEntity>>(entities);
+            return Mapper.Map<IEnumerable<TEntity>, IEnumerable<IEntity>>(entities);
         }
 
-       
+
     }
 }

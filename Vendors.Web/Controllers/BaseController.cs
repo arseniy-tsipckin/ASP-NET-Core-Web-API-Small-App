@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Vendors.API.Models;
 using Vendors.Services;
@@ -24,7 +25,7 @@ namespace Vendors.API.Controllers
                 return _service.GetRepository<TRepository, TDataModel>();
             }
         }
-        protected abstract string RouteName { get; }
+        protected abstract string RouteNameGet { get; }
         public BaseController(IDataService service)
         {
             _service=service;
@@ -55,7 +56,7 @@ namespace Vendors.API.Controllers
             
             TDataModel entry = Repo.Add(Mapper.Map<TViewModel, TDataModel>(item));
             item = Mapper.Map<TDataModel, TViewModel>(entry);
-            return CreatedAtRoute(RouteName, new { id = item.Id }, item);
+            return CreatedAtRoute(RouteNameGet, new { id = item.Id }, item);
         }
 
 
@@ -119,6 +120,12 @@ namespace Vendors.API.Controllers
 
             Repo.RemoveRange(ids);
             return new NoContentResult();
+        }
+        public virtual IEnumerable<TViewModel> Search(string keyword)
+        {
+            
+            return Mapper.Map<IEnumerable<TViewModel>>(Repo.Search(WebUtility.UrlDecode(keyword)));
+
         }
     }
 }

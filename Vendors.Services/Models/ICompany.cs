@@ -1,6 +1,7 @@
 ﻿namespace Vendors.Services.Models
 {
-    public interface ICompany:IModel
+    public interface ICompany:IModel 
+        
     {
         
         string Name { get; set; }

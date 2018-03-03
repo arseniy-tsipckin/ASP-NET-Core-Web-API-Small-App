@@ -1,6 +1,9 @@
-﻿namespace Vendors.API.Models
+﻿using Vendors.Infrastructure.Automapper;
+using Vendors.Services.Models;
+
+namespace Vendors.API.Models
 {
-    public class Location : IModel
+    public class Location : IModel, IMap<ILocation>
     {
         public long Id { get; set; }
         public string Street { get; set; }

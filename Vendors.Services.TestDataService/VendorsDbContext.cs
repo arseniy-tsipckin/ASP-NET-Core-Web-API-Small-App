@@ -13,10 +13,12 @@ namespace Vendors.Services.TestDataService
         {
             
         }
-        public DbSet<Title> Titles { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Title>    Titles { get; set; }
+        public DbSet<Contact>  Contacts { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Company>  Companies { get; set; }
+        public DbSet<Vendor>   Vendors { get; set; }
     }
 }

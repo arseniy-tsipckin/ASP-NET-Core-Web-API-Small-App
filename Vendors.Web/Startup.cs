@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Vendors.Services;
 using System.Reflection;
 using System;
-using StructureMap;
-using StructureMap.Configuration;
 using Vendors.Services.TestDataService;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Vendors.API.nfrastructure;
-
+using Vendors.Services.Infrastructure;
+using Vendors.Infrastructure.Automapper;
+using Vendors.API.Configuration;
 namespace Vendors.API
 {
     public class Startup
@@ -44,7 +43,8 @@ namespace Vendors.API
                 .WithParameter(new TypedParameter(typeof(string), value: dataServiceConnection));
                 
             var container = builder.Build();
-            Mapper.Initialize(cfg => { cfg.AddProfile<AutoMapperProfile>();});
+
+            Mapper.Initialize(cfg => { cfg.AddProfiles(Vendors.API.Configuration.MapConfiguration.Profiles);});
             return new AutofacServiceProvider(container);
 
         }

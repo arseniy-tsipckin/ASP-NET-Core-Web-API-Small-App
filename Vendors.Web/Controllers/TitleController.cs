@@ -4,13 +4,15 @@ using Vendors.Services;
 using Vendors.API.Models;
 using Vendors.Services.Models;
 using Vendors.Services.Repositories;
+using System.Text.Encodings.Web;
+using System.Net;
 
 namespace Vendors.API.Controllers
 {
     [Route("api/[controller]")]
     public class TitleController : BaseController<Title,ITitle,ITitlesRepository>
     {
-        protected override string RouteName => ROUTE_NAME;
+        protected override string RouteNameGet => ROUTE_NAME;
         private const string ROUTE_NAME = "GetTitle";
         public TitleController(IDataService service):base(service)
         {
@@ -53,6 +55,11 @@ namespace Vendors.API.Controllers
         public override IActionResult DeleteRange([FromBody]IEnumerable<long> ids)
         {
             return base.DeleteRange(ids);
+        }
+        [HttpGet("search/{keyword}")]
+        public override IEnumerable<Title> Search(string keyword)
+        {
+            return base.Search(keyword);
         }
 
     }

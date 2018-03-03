@@ -10,7 +10,7 @@ namespace Vendors.API.Controllers
     [Route("api/[controller]")]
     public class LocationController : BaseController<Location, ILocation, ILocationRepository>
     {
-        protected override string RouteName => ROUTE_NAME;
+        protected override string RouteNameGet => ROUTE_NAME;
         private const string ROUTE_NAME = "GetLocation";
         public LocationController(IDataService service) : base(service)
         {
@@ -51,6 +51,11 @@ namespace Vendors.API.Controllers
         public override IActionResult DeleteRange([FromBody]IEnumerable<long> ids)
         {
             return base.DeleteRange(ids);
+        }
+        [HttpGet("search/{keyword}")]
+        public override IEnumerable<Location> Search(string keyword)
+        {
+            return base.Search(keyword);
         }
 
     }

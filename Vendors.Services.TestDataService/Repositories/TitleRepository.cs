@@ -9,7 +9,7 @@ using Vendors.Services.TestDataService.Models;
 
 namespace Vendors.Services.TestDataService.Repositories
 {
-    public class TitleRepository : AbstractRepository<ITitle,Title>, ITitlesRepository
+    public class TitleRepository : BaseRepository<Title,ITitle>, ITitlesRepository
     {
 
 
@@ -18,6 +18,10 @@ namespace Vendors.Services.TestDataService.Repositories
             
         }
 
-        
+        public override IEnumerable<ITitle> Search(string keyword)
+        {
+            
+            return _entities.Where(t => keyword.ToLower().Contains(t.Name.ToLower()) || t.Name.ToLower().Contains(keyword.ToLower()));
+        }
     }
 }

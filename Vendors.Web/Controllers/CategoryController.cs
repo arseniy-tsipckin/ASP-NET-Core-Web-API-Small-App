@@ -14,7 +14,7 @@ namespace Vendors.API.Controllers
         {
         }
 
-        protected override string RouteName => ROUTE_NAME;
+        protected override string RouteNameGet => ROUTE_NAME;
         private const string ROUTE_NAME = "GetCategory";
         [HttpGet]
         public override IEnumerable<Category> GetAll()
@@ -53,6 +53,11 @@ namespace Vendors.API.Controllers
         public override IActionResult DeleteRange([FromBody]IEnumerable<long> ids)
         {
             return base.DeleteRange(ids);
+        }
+        [HttpGet("search/{keyword}")]
+        public override IEnumerable<Category> Search(string keyword)
+        {
+            return base.Search(keyword);
         }
     }
 }

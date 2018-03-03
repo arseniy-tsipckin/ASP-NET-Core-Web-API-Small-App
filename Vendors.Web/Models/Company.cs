@@ -1,8 +1,11 @@
 ﻿
 
+using Vendors.Infrastructure.Automapper;
+using Vendors.Services.Models;
+
 namespace Vendors.API.Models
 {
-    public class Company : IModel
+    public class Company : IModel,IMap<ICompany>
     {
         public long Id { get; set; }
         public string Name { get; set; }

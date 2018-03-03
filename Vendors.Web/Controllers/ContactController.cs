@@ -10,7 +10,7 @@ namespace Vendors.API.Controllers
     [Route("api/[controller]")]
     public class ContactController : BaseController<Contact, IContact, IContactRepository>
     {
-        protected override string RouteName => ROUTE_NAME;
+        protected override string RouteNameGet => ROUTE_NAME;
         private const string ROUTE_NAME = "GetContact";
         public ContactController(IDataService service) : base(service)
         {
@@ -20,7 +20,6 @@ namespace Vendors.API.Controllers
         {
             return base.GetAll();
         }
-
         [HttpGet("{id}", Name = ROUTE_NAME)]
         public override IActionResult GetById(long id)
         {
@@ -52,6 +51,11 @@ namespace Vendors.API.Controllers
         public override IActionResult DeleteRange([FromBody]IEnumerable<long> ids)
         {
             return base.DeleteRange(ids);
+        }
+        [HttpGet("search/{keyword}")]
+        public override IEnumerable<Contact> Search(string keyword)
+        {
+            return base.Search(keyword);
         }
 
 

@@ -6,23 +6,24 @@ using Vendors.Services.Models;
 
 namespace Vendors.Services.Repositories
 {
-    public interface IRepository<IEntity> where IEntity : IModel
+    public interface IRepository<TEntity> where TEntity : IModel
     {
-        IEntity Add(IEntity entity);
-        IEnumerable<IEntity> AddRange(IEnumerable<IEntity> entities);
+        TEntity Add(TEntity entity);
+        IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
 
-        void Update(IEntity entity);
-        void UpdateRange(IEnumerable<IEntity> entities);
+        void Update(TEntity entity);
+        void UpdateRange(IEnumerable<TEntity> entities);
 
         void Remove(long id);
         void RemoveRange(IEnumerable<long> ids);
 
         long Count();
-        long Count(Expression<Func<IEntity, bool>> predicate);
+        long Count(Expression<Func<TEntity, bool>> predicate);
 
-        IEnumerable<IEntity> Get(Expression<Func<IEntity, bool>> predicate);
-        IEntity GetSingleOrDefault(Expression<Func<IEntity, bool>> predicate);
-        IEntity Get(long id);
-        IEnumerable<IEntity> GetAll();
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
+        TEntity GetSingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+        TEntity Get(long id);
+        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> Search(string keyword);
     }
 }
