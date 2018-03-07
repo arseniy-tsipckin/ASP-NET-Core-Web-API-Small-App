@@ -22,21 +22,19 @@ namespace Vendors.Services.TestDataService.Repositories
 
         public override IEnumerable<IProduct> Search(string keyword)
         {
-            return _entities.Where(p => keyword.Contains(p.Name)
-            || keyword.Contains(p.Category.Name)
-            || p.Name.Contains(keyword)
-            || p.Category.Name.Contains(keyword));
+            var words = keyword.Split(' ');
+            return (from word in words
+             from product in _entities
+             where
+             word!=string.Empty &&
+            
+             (word.Trim().ToLower().Contains(product.Name.Trim().ToLower())
+            || word.Trim().ToLower().Contains(product.Category.Name.Trim().ToLower())
+            || product.Name.Trim().ToLower().Contains(word.Trim().ToLower())
+            || product.Category.Name.Trim().ToLower().Contains(word.Trim().ToLower()))
+            select product);
         }
-        public override IProduct Add(IProduct entity)
-        {
-            var category= _context.Categories.Add((Category)entity.Category);
-            _context.SaveChanges();
-            entity.Category = category.Entity;
-            var retval=base.Add(entity);
-            retval = _context.Products.SingleOrDefault(p => p.Id == retval.Id);
-
-            return retval;
-        }
+        
 
 
     }

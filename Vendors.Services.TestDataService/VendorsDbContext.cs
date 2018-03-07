@@ -20,5 +20,11 @@ namespace Vendors.Services.TestDataService
         public DbSet<Product> Products { get; set; }
         public DbSet<Company>  Companies { get; set; }
         public DbSet<Vendor>   Vendors { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

@@ -17,49 +17,57 @@ namespace Vendors.Services.TestDataService.Repositories
 
         public IEnumerable<IVendor> GetByCompany(long id)
         {
-            throw new NotImplementedException();
+            return _entities.Where(vendor => vendor.Company.Id==id);
         }
 
         public IEnumerable<IVendor> GetByContact(long id)
         {
-            throw new NotImplementedException();
+            return _entities.Where(vendor => vendor.Contact.Id == id); 
         }
 
         public IEnumerable<IVendor> GetByTitle(long id)
         {
-            throw new NotImplementedException();
+            return _entities.Where(vendor => vendor.Title.Id == id); 
         }
 
         public override IEnumerable<IVendor> Search(string keyword)
         {
-            return _entities.Where(v => keyword.Contains(v.FirstName) 
-            || keyword.Contains(v.LastName) 
-            || keyword.Contains(v.Title.Name)
-            || keyword.Contains(v.Contact.Email)
-            || keyword.Contains(v.Contact.Phone)
-            || keyword.Contains(v.Contact.Fax)
-            || keyword.Contains(v.Company.Name)
-            || keyword.Contains(v.Company.Address.City)
-            || keyword.Contains(v.Company.Address.Country)
-            || keyword.Contains(v.Company.Address.PostalCode)
-            || keyword.Contains(v.Company.Address.StateProvince)
-            || keyword.Contains(v.Company.Address.Street)
-            || keyword.Contains(v.Company.Contact.Email)
-            || keyword.Contains(v.Company.Contact.Phone)
-            || keyword.Contains(v.Company.Contact.Fax) 
-            || v.FirstName.Contains(keyword)
-            || v.LastName.Contains(keyword)
-            || v.Title.Name.Contains(keyword)
-            || v.Contact.Email.Contains(keyword)
-            || v.Contact.Phone.Contains(keyword)
-            || v.Contact.Fax.Contains(keyword)
-            || v.Company.Name.Contains(keyword)
-            || v.Company.Address.City.Contains(keyword)
-            || v.Company.Address.Country.Contains(keyword)
-            || v.Company.Address.StateProvince.Contains(keyword)
-            || v.Company.Address.Street.Contains(keyword)
-            || v.Company.Contact.Phone.Contains(keyword)
-            || v.Company.Contact.Fax.Contains(keyword));
+            var wodrds = keyword.Split(' ');
+
+            return (from word in wodrds
+                    from vendor in 
+                _entities
+                where word!=string.Empty &&
+             (word.Trim().ToLower().Contains(vendor.FirstName.Trim().ToLower()) 
+            || word.Trim().ToLower().Contains(vendor.LastName.Trim().ToLower()) 
+            || word.Trim().ToLower().Contains(vendor.Title.Name.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Contact.Email.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Contact.Phone.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Contact.Fax.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Name.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Address.City.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Address.Country.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Address.PostalCode.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Address.StateProvince.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Address.Street.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Contact.Email.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Contact.Phone.Trim().ToLower())
+            || word.Trim().ToLower().Contains(vendor.Company.Contact.Fax.Trim().ToLower()) 
+            || vendor.FirstName.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.LastName.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Title.Name.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Contact.Email.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Contact.Phone.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Contact.Fax.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Name.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Address.City.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Address.Country.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Address.StateProvince.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Address.Street.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Contact.Phone.Trim().ToLower().Contains(word.Trim().ToLower())
+            || vendor.Company.Contact.Fax.Trim().ToLower().Contains(word.Trim().ToLower()))
+
+            select vendor).Distinct();
 
             ;
         }

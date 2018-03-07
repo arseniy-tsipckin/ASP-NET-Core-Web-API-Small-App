@@ -12,14 +12,14 @@ namespace Vendors.Services.TestDataService.Models
     {
         public string FirstName { get ; set ; }
         public string LastName { get; set ; }
-        public Title TitleField { get; set ; }
-        public Company CompanyField { get; set ; }
-        public Contact ContactField { get ; set ; }
+        public Title Title { get; set ; }
+        public Company Company { get; set ; }
+        public Contact Contact { get ; set ; }
         [NotMapped]
-        public ITitle Title { get => TitleField; set => value=TitleField; }
+        ITitle IVendor.Title { get => Title; set => Title=(Title)value; }
         [NotMapped]
-        public ICompany Company { get => CompanyField; set => value=CompanyField; }
+        ICompany IVendor.Company { get => Company; set => Company=(Company)value; }
         [NotMapped]
-        public IContact Contact { get => ContactField; set => value=ContactField; }
+        IContact IVendor.Contact { get => Contact; set => Contact=(Contact)value; }
     }
 }

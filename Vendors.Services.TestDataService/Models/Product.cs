@@ -8,16 +8,25 @@ using Vendors.Infrastructure.Automapper;
 
 namespace Vendors.Services.TestDataService.Models
 {
+    
     public class Product :AbstractModel, IProduct,IMap<Product>
     {
-        public string Name { get; set ; }
-        [NotMapped] //EF
-        public ICategory Category { get =>CategoryField ; set =>value=CategoryField; }
-        [IgnoreMap] //AutoMapper
-        public Category CategoryField { get; set; }
-
         
 
-       
+        public string Name { get; set ; }
+        [NotMapped] //EF
+        ICategory IProduct.Category
+        {
+            get =>Category;
+            
+            set =>value= Category;
+        }
+        public Category Category { get; set; }
+        
+        
+
+
+
+
     }
 }

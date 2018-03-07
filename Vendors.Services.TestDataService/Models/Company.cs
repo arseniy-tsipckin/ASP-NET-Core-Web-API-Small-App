@@ -11,12 +11,13 @@ namespace Vendors.Services.TestDataService.Models
     {
 
         public string Name { get; set; }
+        
+        public Location Address { get; set; }
+        
+        public Contact  Contact{ get; set; }
         [NotMapped]
-        public ILocation Address{ get =>AddressField;set =>value=AddressField; }
-        public Location AddressField { get; set; }
+        ILocation ICompany.Address { get => Address; set => Address=(Location)value; }
         [NotMapped]
-        public IContact Contact { get =>ContactField; set =>value=ContactField; }
-        public Contact  ContactField{ get; set; }
-
+        IContact ICompany.Contact { get => Contact; set => Contact=(Contact)value; }
     }
 }
